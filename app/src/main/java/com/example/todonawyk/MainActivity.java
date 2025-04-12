@@ -1,12 +1,16 @@
 package com.example.todonawyk;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
 
+import com.example.todonawyk.action_settings.settings.SettingsFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,6 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.todonawyk.databinding.ActivityMainBinding;
+
+import androidx.appcompat.app.AppCompatDelegate;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+        Button toggleThemeButton = findViewById(R.id.toggleThemeButton);
+        toggleThemeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentNightMode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+                if (currentNightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Switch to light mode
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // Switch to dark mode
+                }
+            }
+        });
     }
 
     @Override
@@ -62,5 +83,19 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main, new SettingsFragment())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -22,4 +22,10 @@
         android:name="com.example.todonawyk.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.todonawyk.action_settings.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
